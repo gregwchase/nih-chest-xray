@@ -14,7 +14,7 @@ import os
 from sklearn.preprocessing import LabelEncoder
 
 
-batch_size = 10
+batch_size = 20
 nb_classes = 15
 nb_epoch = 20
 

@@ -22,7 +22,7 @@ img_rows, img_cols = 512, 512
 channels = 1
 nb_filters = 32
 # pool_size = (2,2)
-kernel_size = (4,4)
+kernel_size = (2,2)
 
 # Import data
 labels = pd.read_csv("../data/sample_labels.csv")
@@ -66,30 +66,52 @@ print("y_test Shape: ", y_test.shape)
 
 model = Sequential()
 
+'''
+First Three Layers are identical
+nb_filters = 32
+kernel_size = (4,4)
+'''
 
-model.add(Conv2D(64, (4,4),
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
     padding='valid',
-    strides=4,
+    strides=1,
     input_shape=(img_rows, img_cols, channels)))
-# model.add(BatchNormalization())
+model.add(Activation('relu'))
+
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+model.add(Activation('relu'))
+
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))
 
 
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 
-model.add(Conv2D(32, (4,4)))
-# model.add(BatchNormalization())
+'''
+Second set of three layers
+nb_filters = 64
+kernel_size = 4,4
+'''
+
+nb_filters = 64
+kernel_size = (4,4)
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))
 
 
-model.add(Conv2D(32, (4, 4)))
-# model.add(BatchNormalization())
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+model.add(Activation('relu'))
+
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))
 
 
 model.add(MaxPooling2D(pool_size=(2,2)))
-# model.add(Dropout(0.20))
 
 
 model.add(Flatten())
@@ -98,7 +120,6 @@ print("Model flattened out to: ", model.output_shape)
 
 model.add(Dense(2048))
 model.add(Activation('relu'))
-model.add(Dropout(0.20))
 
 
 model.add(Dense(nb_classes))
@@ -110,7 +131,7 @@ model.compile(loss = 'categorical_crossentropy',
                 metrics=['accuracy'])
 
 
-stop = EarlyStopping(monitor='val_loss',
+stop = EarlyStopping(monitor='acc',
                         min_delta=0.001,
                         patience=2,
                         verbose=0,

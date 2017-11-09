@@ -1,4 +1,4 @@
-# Chest X-Ray Deep Net
+# X-Net: Classifying Chest X-Rays Using Deep Learning
 
 ## Background
 In October 2017, the National Institute of Health open sourced 100,000 images of chest
@@ -25,6 +25,14 @@ the patient gender.
 
 * Couple structured and unstructured datasets together into a dual classifier.
 
+
+## Pipeline
+
+* eda.py
+* resize_images.py
+* reconcile_labels.py
+* image_to_array.py
+* cnn.py
 
 ## Exploratory Data Analysis
 
@@ -53,3 +61,5 @@ within the H2O.ai framework.
 [NIH Clinical Center provides one of the largest publicly available chest x-ray datasets to scientific community](https://www.nih.gov/news-events/news-releases/nih-clinical-center-provides-one-largest-publicly-available-chest-x-ray-datasets-scientific-community?utm_content=buffer0bad0&utm_medium=social&utm_source=linkedin.com&utm_campaign=buffer)
 
 [AutoML: Automatic Machine Learning](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/automl.html)
+
+[Stacked Ensembles](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/stacked-ensembles.html)

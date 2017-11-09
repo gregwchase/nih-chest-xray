@@ -45,6 +45,6 @@ if __name__ == '__main__':
     print(X_train.shape)
 
     print("Saving Train Array")
-    save_to_array('../data/X_train.npy', X_train)
+    save_to_array('../data/X_sample.npy', X_train)
 
     print("Seconds: ", round(time.time() - start_time),2)

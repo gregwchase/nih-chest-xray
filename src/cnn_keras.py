@@ -14,9 +14,9 @@ import os
 from sklearn.preprocessing import LabelEncoder
 
 
-batch_size = 1000
+batch_size = 100
 nb_classes = 15
-nb_epoch = 2
+nb_epoch = 20
 
 img_rows, img_cols = 512, 512
 channels = 1

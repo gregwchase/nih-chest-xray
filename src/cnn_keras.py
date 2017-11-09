@@ -69,7 +69,7 @@ model = Sequential()
 '''
 First Three Layers are identical
 nb_filters = 32
-kernel_size = (4,4)
+kernel_size = (2,2)
 '''
 
 model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
@@ -98,6 +98,24 @@ kernel_size = 4,4
 
 nb_filters = 64
 kernel_size = (4,4)
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+model.add(Activation('relu'))
+
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+model.add(Activation('relu'))
+
+
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+model.add(Activation('relu'))
+
+
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+
+nb_filters=128
+kernel_size=(8,8)
 
 model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))

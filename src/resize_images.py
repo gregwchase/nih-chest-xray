@@ -44,5 +44,5 @@ def crop_and_resize_images(path, new_path, img_size):
 
 if __name__ == '__main__':
     start_time = time.time()
-    crop_and_resize_images(path='../data/images/', new_path='../data/resized-512/', img_size=512)
+    crop_and_resize_images(path='../data/images/', new_path='../data/resized-256/', img_size=256)
     print("Seconds: ", time.time() - start_time)

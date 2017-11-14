@@ -103,3 +103,6 @@ ENV/
 
 # Images
 *.png
+
+# Other
+*.DS_Store

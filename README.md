@@ -60,6 +60,9 @@ within the H2O.ai framework.
 ## References
 [NIH Clinical Center provides one of the largest publicly available chest x-ray datasets to scientific community](https://www.nih.gov/news-events/news-releases/nih-clinical-center-provides-one-largest-publicly-available-chest-x-ray-datasets-scientific-community?utm_content=buffer0bad0&utm_medium=social&utm_source=linkedin.com&utm_campaign=buffer)
 
+
+[Algorithm better at diagnosing pneumonia than radiologists](https://phys.org/news/2017-11-algorithm-pneumonia-radiologists.html?utm_content=bufferf0d3d&utm_medium=social&utm_source=linkedin.com&utm_campaign=buffer)
+
 [AutoML: Automatic Machine Learning](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/automl.html)
 
 [Stacked Ensembles](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/stacked-ensembles.html)

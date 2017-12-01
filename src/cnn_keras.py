@@ -145,9 +145,8 @@ tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True
 model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epoch,
           verbose=1,
           validation_split=0.2,
-          class_weight= 'auto',
+          class_weight='auto',
           callbacks=[stop, tensor_board]
           )
-
 
 model.evaluate(X_test, y_test)

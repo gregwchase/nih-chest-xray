@@ -3,6 +3,7 @@ import h2o
 from h2o.estimators import H2OGradientBoostingEstimator
 import time
 
+
 def drop_columns(df, lst):
     """
     Drops columns specified in the Pandas DataFrame
@@ -12,6 +13,16 @@ def drop_columns(df, lst):
     """
     df.drop(lst, axis=1, inplace=True)
     return df
+
+
+def convert_to_factor(df, column):
+    """
+    Convert features to factors (categories) in H2OFrame
+    :param df: Name of H2OFrame
+    :param column: String of column name within H2OFrame
+    :return: Column converted to factor
+    """
+    return df[column].asfactor()
 
 
 if __name__ == '__main__':
@@ -25,11 +36,8 @@ if __name__ == '__main__':
                     'Original_Image_Pixel_Spacing_X',
                     'Original_Image_Pixel_Spacing_Y', 'Unnamed']
 
-    # Drop columns that aren't needed.
-    # data.drop(['Original_Image_Pixel_Spacing_X', 'Original_Image_Pixel_Spacing_Y', 'Unnamed'], axis=1, inplace=True)
-    # data.drop(['Original_Image_Width', 'Original_Image_Height'], axis=1, inplace=True)
-
-    data = drop_columns(data,['Original_Image_Pixel_Spacing_X', 'Original_Image_Pixel_Spacing_Y', 'Unnamed', 'Original_Image_Width', 'Original_Image_Height', 'Image_Index'])
+    data = drop_columns(data, ['Original_Image_Pixel_Spacing_X', 'Original_Image_Pixel_Spacing_Y', 'Unnamed',
+                               'Original_Image_Width', 'Original_Image_Height', 'Image_Index'])
 
     # Check if number is in years, months, or days
     data['Age_Measure'] = data['Patient_Age'].astype(str).str[3]
@@ -37,37 +45,31 @@ if __name__ == '__main__':
     # Remove the character in Patient Age, and convert to integer
     data['Patient_Age'] = data['Patient_Age'].map(lambda x: str(x)[:-1]).astype(int)
 
-    # Remove everything to the right of the '|' delimiter in the labels (preliminary category reduction)
-    # Reduce categories from 709 to 15
+    # Remove all categories right of the '|' delimiter in labels (preliminary category reduction)
+    # Reduces categories from 709 to 15
     data['Finding_Labels'] = data['Finding_Labels'].apply(lambda x: x.split('|')[0])
 
-    print("Initializing H2O Cluster")
     h2o.init(nthreads=-1)
 
     data = h2o.H2OFrame(data)
 
-
-
     # Convert features to factors (categorical)
-    data['Follow_Up_#'] = data['Follow_Up_#'].asfactor()
-    data['Patient_ID'] = data['Patient_ID'].asfactor()
+    data['Follow_Up_#'] = convert_to_factor(data, "Follow_Up_#")
+    data['Patient_ID'] = convert_to_factor(data, "Patient_ID")
 
-    print(data["Finding_Labels"].table().sort(by="Count", ascending=False))
+    # print(data["Finding_Labels"].table().sort(by="Count", ascending=False))
 
     # Split Data
     print("Splitting Data")
-    split = data.split_frame(ratios=[0.6, 0.2], seed=7)
-
-    train = split[0]
-    valid = split[1]
-    test = split[2]
+    train, valid, test = data.split_frame(ratios=[0.6, 0.2], seed=7)
 
     # Train Model
     training_columns = [t for t in train.columns if t != 'Finding_Labels']
 
     # GBM CLASSIFIER
     print("Training GBM")
-    gbm = H2OGradientBoostingEstimator(ntrees=200, distribution='multinomial', max_depth=4, learn_rate=0.1, balance_classes=True)
+    gbm = H2OGradientBoostingEstimator(ntrees=100, distribution='multinomial', max_depth=4, learn_rate=0.01,
+                                       balance_classes=True)
     gbm.train(x=training_columns, y='Finding_Labels', training_frame=train, validation_frame=valid)
     performance = gbm.model_performance(test_data=test)
 

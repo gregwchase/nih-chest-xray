@@ -1,6 +1,5 @@
 import pandas as pd
 import h2o
-import os
 from h2o.estimators import H2OGradientBoostingEstimator
 import time
 

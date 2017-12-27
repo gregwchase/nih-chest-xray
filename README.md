@@ -67,6 +67,7 @@ Log Loss|1.400|
 MSE|0.450|
 RMSE|0.670|
 R^2|0.967|
+Mean Per-Class Error|0.933|
 
 
 

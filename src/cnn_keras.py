@@ -7,7 +7,7 @@ from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
 from keras.utils import np_utils
-from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
@@ -209,5 +209,7 @@ if __name__ == '__main__':
 
     precision = precision_score(y_test, y_pred, average='weighted')
     recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred)
     print("Precision: ", precision)
     print("Recall: ", recall)
+    print("F1: ", f1)

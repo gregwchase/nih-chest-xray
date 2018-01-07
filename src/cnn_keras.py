@@ -7,6 +7,7 @@ from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
 from keras.utils import np_utils
+from keras.utils import multi_gpu_model
 from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -135,6 +136,7 @@ def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, bat
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
+    model = multi_gpu_model(model, gpus=8)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])

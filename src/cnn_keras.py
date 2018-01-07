@@ -11,142 +11,203 @@ from sklearn.metrics import precision_score, recall_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-batch_size = 100
-nb_classes = 15
-nb_epoch = 2
+def split_data(X, y, test_data_size):
+    '''
+    Split data into test and training datasets.
 
-img_rows, img_cols = 256, 256
-channels = 1
-nb_filters = 32
-kernel_size = (2, 2)
+    INPUT
+        X: NumPy array of arrays
+        y: Pandas series, which are the labels for input array X
+        test_data_size: size of test/train split. Value from 0 to 1
 
-# Import data
-labels = pd.read_csv("../data/sample_labels.csv")
-X = np.load("../data/X_sample_256.npy")
+    OUPUT
+        Four arrays: X_train, X_test, y_train, and y_test
+    '''
+    return train_test_split(X, y, test_size=test_data_size, random_state=42)
 
-y = labels.Finding_Labels
-# y = np.array(pd.get_dummies(y))
-label_encoder = LabelEncoder()
-y = label_encoder.fit_transform(y)
-y = y.reshape(-1, 1)
 
-print("Splitting data into test/ train datasets")
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+def reshape_data(arr, img_rows, img_cols, channels):
+    '''
+    Reshapes the data into format for CNN.
 
-print("Reshaping Data")
-X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, channels)
-X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, channels)
+    INPUT
+        arr: Array of NumPy arrays.
+        img_rows: Image height
+        img_cols: Image width
+        channels: Specify if the image is grayscale (1) or RGB (3)
 
-print("X_train Shape: ", X_train.shape)
-print("X_test Shape: ", X_test.shape)
+    OUTPUT
+        Reshaped array of NumPy arrays.
+    '''
+    return arr.reshape(arr.shape[0], img_rows, img_cols, channels)
 
-input_shape = (img_rows, img_cols, channels)
+def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes):
+    '''
+    Define and run the Convolutional Neural Network
 
-print("Normalizing Data")
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
+    INPUT
+        X_train: Array of NumPy arrays
+        X_test: Array of NumPy arrays
+        y_train: Array of labels
+        y_test: Array of labels
+        kernel_size: Initial size of kernel
+        nb_filters: Initial number of filters
+        channels: Specify if the image is grayscale (1) or RGB (3)
+        nb_epoch: Number of epochs
+        batch_size: Batch size for the model
+        nb_classes: Number of classes for classification
 
-X_train /= 255
-X_test /= 255
+    OUTPUT
+        Fitted CNN model
+    '''
 
-y_train = np_utils.to_categorical(y_train, nb_classes)
-y_test = np_utils.to_categorical(y_test, nb_classes)
-print("y_train Shape: ", y_train.shape)
-print("y_test Shape: ", y_test.shape)
+    model = Sequential()
 
-model = Sequential()
+    '''
+    First set of three layers
+    Image size: 256 x 256
+    nb_filters = 32
+    kernel_size = (2,2)
+    '''
 
-'''
-First set of three layers
-Image size: 256 x 256
-nb_filters = 32
-kernel_size = (2,2)
-'''
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
+                     padding='valid',
+                     strides=1,
+                     input_shape=(img_rows, img_cols, channels)))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
-                 padding='valid',
-                 strides=1,
-                 input_shape=(img_rows, img_cols, channels)))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(MaxPooling2D(pool_size=(2, 2)))
+    '''
+    Second set of three layers
+    Image Size: 128 x 128
+    nb_filters = 64
+    kernel_size = 4,4
+    '''
 
-'''
-Second set of three layers
-Image Size: 128 x 128
-nb_filters = 64
-kernel_size = 4,4
-'''
+    nb_filters = 64
+    kernel_size = (4, 4)
 
-nb_filters = 64
-kernel_size = (4, 4)
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(MaxPooling2D(pool_size=(2, 2)))
+    '''
+    Third set of three layers
+    Image Size: 64 x 64
+    nb_filters = 128
+    kernel_size = 8,8
+    '''
 
-'''
-Third set of three layers
-Image Size: 64 x 64
-nb_filters = 128
-kernel_size = 8,8
-'''
+    nb_filters = 128
+    kernel_size = (8, 8)
 
-nb_filters = 128
-kernel_size = (8, 8)
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
 
-model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    print("Model flattened out to: ", model.output_shape)
 
-model.add(Flatten())
-print("Model flattened out to: ", model.output_shape)
+    model.add(Dense(128))
+    model.add(Activation('relu'))
 
-model.add(Dense(128))
-model.add(Activation('relu'))
+    model.add(Dense(nb_classes))
+    model.add(Activation('softmax'))
 
-model.add(Dense(nb_classes))
-model.add(Activation('softmax'))
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
+    print(model.summary())
 
-print(model.summary())
+    stop = EarlyStopping(monitor='acc',
+                         min_delta=0.001,
+                         patience=2,
+                         verbose=0,
+                         mode='auto')
 
-stop = EarlyStopping(monitor='acc',
-                     min_delta=0.001,
-                     patience=2,
-                     verbose=0,
-                     mode='auto')
+    tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
-tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
+    model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epoch,
+              verbose=1,
+              validation_split=0.2,
+              class_weight='auto',
+              callbacks=[stop, tensor_board]
+              )
 
-model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epoch,
-          verbose=1,
-          validation_split=0.2,
-          class_weight='auto',
-          callbacks=[stop, tensor_board]
-          )
+if __name__ == '__main__':
 
-model.evaluate(X_test, y_test)
+    batch_size = 100
+    nb_classes = 15
+    nb_epoch = 1
+
+    img_rows, img_cols = 256, 256
+    channels = 1
+    nb_filters = 32
+    kernel_size = (2, 2)
+
+    # Import data
+    labels = pd.read_csv("../data/sample_labels.csv")
+    X = np.load("../data/X_sample_256.npy")
+
+    y = labels.Finding_Labels
+    # y = np.array(pd.get_dummies(y))
+    label_encoder = LabelEncoder()
+    y = label_encoder.fit_transform(y)
+    y = y.reshape(-1, 1)
+
+    print("Splitting data into test/ train datasets")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    print("Reshaping Data")
+    X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, channels)
+    X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, channels)
+
+    print("X_train Shape: ", X_train.shape)
+    print("X_test Shape: ", X_test.shape)
+
+    input_shape = (img_rows, img_cols, channels)
+
+    print("Normalizing Data")
+    X_train = X_train.astype('float32')
+    X_test = X_test.astype('float32')
+
+    X_train /= 255
+    X_test /= 255
+
+    y_train = np_utils.to_categorical(y_train, nb_classes)
+    y_test = np_utils.to_categorical(y_test, nb_classes)
+    print("y_train Shape: ", y_train.shape)
+    print("y_test Shape: ", y_test.shape)
+
+
+    model = cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
+
+    print("Predicting")
+    y_pred = model.predict(X_test)
+
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    print("Precision: ", precision)
+    print("Recall: ", recall)

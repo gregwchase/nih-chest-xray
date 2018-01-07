@@ -162,14 +162,14 @@ if __name__ == '__main__':
     nb_classes = 15
     nb_epoch = 1
 
-    img_rows, img_cols = 256, 256
+    img_rows, img_cols = 512, 512
     channels = 1
     nb_filters = 32
     kernel_size = (2, 2)
 
     # Import data
     labels = pd.read_csv("../data/sample_labels.csv")
-    X = np.load("../data/X_sample_256.npy")
+    X = np.load("../data/X_sample.npy")
 
     y = labels.Finding_Labels
     # y = np.array(pd.get_dummies(y))

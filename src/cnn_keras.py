@@ -42,7 +42,7 @@ def reshape_data(arr, img_rows, img_cols, channels):
     '''
     return arr.reshape(arr.shape[0], img_rows, img_cols, channels)
 
-def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes):
+def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes, nb_gpus):
     '''
     Define and run the Convolutional Neural Network
 
@@ -136,7 +136,7 @@ def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, bat
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-    model = multi_gpu_model(model, gpus=8)
+    model = multi_gpu_model(model, gpus=nb_gpus)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
@@ -163,8 +163,8 @@ if __name__ == '__main__':
 
     batch_size = 100
     nb_classes = 15
-    nb_epoch = 1
-
+    nb_epoch = 20
+    nb_gpus = 8
     img_rows, img_cols = 512, 512
     channels = 1
     nb_filters = 32
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     print("y_test Shape: ", y_test.shape)
 
 
-    model = cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
+    model = cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes, nb_gpus)
 
     print("Predicting")
     y_pred = model.predict(X_test)
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
     precision = precision_score(y_test, y_pred, average='weighted')
     recall = recall_score(y_test, y_pred, average='weighted')
-    f1 = f1_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred, average="weighted")
     print("Precision: ", precision)
     print("Recall: ", recall)
     print("F1: ", f1)

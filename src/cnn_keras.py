@@ -210,6 +210,9 @@ if __name__ == '__main__':
     print("Predicting")
     y_pred = model.predict(X_test)
 
+    y_test = np.argmax(y_test, axis=1)
+    y_pred = np.argmax(y_pred, axis=1)
+
     precision = precision_score(y_test, y_pred, average='weighted')
     recall = recall_score(y_test, y_pred, average='weighted')
     f1 = f1_score(y_test, y_pred)

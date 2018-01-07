@@ -100,8 +100,8 @@ def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, bat
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    # model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
 
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -121,8 +121,8 @@ def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, bat
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    # model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
 
     model.add(MaxPooling2D(pool_size=(2, 2)))
 

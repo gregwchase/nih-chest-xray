@@ -120,7 +120,7 @@ can resume against the ChestXray14 dataset.
 
 ## Tech Stack
 
-<img align="center" src="data/tech_stack.png" alt="tech_stack_banner"/>
+<img align="center" src="data/tech_stack.jpg" alt="tech_stack_banner"/>
 
 
 ## References

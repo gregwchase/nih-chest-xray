@@ -2,8 +2,8 @@
 
 ## Background
 In October 2017, the National Institute of Health open sourced 112,000+ images of chest
-chest x-rays. The datasets was opened in order to allow clinicians to make better
-diagnostic decisions for patients.
+chest x-rays. Now known as ChestXray14, this dataset was opened in order to allow clinicians to make better
+diagnostic decisions for patients with various lung diseases.
 
 
 # Dataset
@@ -28,11 +28,18 @@ the patient gender.
 
 ## Pipeline
 
-* eda.py
-* resize_images.py
-* reconcile_labels.py
-* image_to_array.py
-* cnn.py
+Two pipelines were created for each dataset. Each script is labeled as either "Structured" or
+"CNN", which indicates which data pipeline the script is part of.
+
+|Description|Script|Model|
+| :-------------: |:-------------:|:-------------:|
+EDA|eda.py|Structured
+Resize Images|resize_images.py|CNN
+Reconcile Labels|reconcile_labels.py|CNN
+Convert Images to Arrays|image_to_array.py|CNN
+CNN Model|cnn.py|CNN
+Structured Data Model|model.py|Structured
+
 
 ## Exploratory Data Analysis
 
@@ -65,7 +72,7 @@ within the H2O.ai framework.
 
 |Measurement|Score|
 | :-------------: |:-------------:|
-Model | H2OGradientBoostingEstimator|
+Model | H2O Gradient Boosting Estimator|
 Log Loss|1.670|
 MSE|0.510|
 RMSE|0.714|
@@ -79,7 +86,7 @@ Mean Per-Class Error|0.933|
 
 ## Results (Convolutional Neural Network)
 |Measurement|Score|
-| ------------- |:-------------:|
+| :-------------: |:-------------:|
 
 
 ## Explanations

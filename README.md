@@ -33,12 +33,12 @@ Two pipelines were created for each dataset. Each script is labeled as either "S
 
 |Description|Script|Model|
 | :-------------: |:-------------:|:-------------:|
-EDA|eda.py|Structured
-Resize Images|resize_images.py|CNN
-Reconcile Labels|reconcile_labels.py|CNN
-Convert Images to Arrays|image_to_array.py|CNN
-CNN Model|cnn.py|CNN
-Structured Data Model|model.py|Structured
+|EDA|eda.py|Structured
+|Resize Images|resize_images.py|CNN
+|Reconcile Labels|reconcile_labels.py|CNN
+|Convert Images to Arrays|image_to_array.py|CNN
+|CNN Model|cnn.py|CNN
+|Structured Data Model|model.py|Structured
 
 
 ## Exploratory Data Analysis
@@ -64,30 +64,41 @@ and does not affect the analysis.
 
 ## Model (Structured Data)
 
-The structured data is trained using a distributed random forest. This exists
-within the H2O.ai framework.
+The structured data is trained using a gradient boosted classifier. The random
+forest classifier was also used. When comparing the results, both were nearly
+equal. The GBM classifier was used due to its speed over the random forest,
+and due to producing equal or better results to the random forest.
 
 
 ## Results (Structured Data)
 
 |Measurement|Score|
 | :-------------: |:-------------:|
-Model | H2O Gradient Boosting Estimator|
-Log Loss|1.670|
-MSE|0.510|
-RMSE|0.714|
-R^2|0.967|
-Mean Per-Class Error|0.933|
+|Model | H2O Gradient Boosting Estimator|
+|Log Loss|1.670|
+|MSE|0.510|
+|RMSE|0.714|
+|R^2|0.967|
+|Mean Per-Class Error|0.933|
 
 
 
 ## Model (Convolutional Neural Network)
 
+The CNN was trained using Keras, with the TensorFlow backend.
+
+The model is similar to the VGG architectures; 2 to 3 convolution layers are used in each set of layers, followed by a pooling layer.
+
+Dropout is used in the fully connected layers only, which slightly
+improved the results.
 
 ## Results (Convolutional Neural Network)
 |Measurement|Score|
 | :-------------: |:-------------:|
-
+|Accuracy|0.5456
+|Precision|0.306
+|Recall|0.553
+|F1|0.394
 
 ## Explanations
 
@@ -109,11 +120,7 @@ can resume against the ChestXray14 dataset.
 
 ## Tech Stack
 
-* H2O.ai
-* Keras
-* MXNet
-* NVIDIA NGC
-* Pandas
+<img align="center" src="data/tech_stack.png" alt="tech_stack_banner"/>
 
 
 ## References

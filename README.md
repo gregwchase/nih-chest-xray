@@ -10,7 +10,7 @@ diagnostic decisions for patients with various lung diseases.
 The ChestXray14 [dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345)
 consists of both images and structured data.
 
-The image dataset consists of 112,000+ images, which consist of 30,000 patients.
+The image dataset consists of 112,000+ images, which consist of 30,000 patients. My analysis consisted of 10,000 images, due to data sourcing & corrpution issues.
 Some patients have multiple scans, which will be taken into consideration.
 All images are originally 1024 x 1024 pixels.
 
@@ -120,8 +120,9 @@ can resume against the ChestXray14 dataset.
 
 ## Tech Stack
 
-<img align="middle" src="data/tech_stack.jpg" alt="tech_stack_banner"/>
-
+<p align = "center">
+<img align="center" src="data/tech_stack.jpg" alt="tech_stack_banner"/>
+</p>
 
 ## References
 [NIH Clinical Center provides one of the largest publicly available chest x-ray datasets to scientific community](https://www.nih.gov/news-events/news-releases/nih-clinical-center-provides-one-largest-publicly-available-chest-x-ray-datasets-scientific-community?utm_content=buffer0bad0&utm_medium=social&utm_source=linkedin.com&utm_campaign=buffer)

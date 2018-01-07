@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from keras.callbacks import EarlyStopping
 from keras.callbacks import TensorBoard
-from keras.layers import Dense, Activation, Flatten
+from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
@@ -130,8 +130,13 @@ def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, bat
     model.add(Flatten())
     print("Model flattened out to: ", model.output_shape)
 
-    model.add(Dense(128))
+    model.add(Dense(4096))
     model.add(Activation('relu'))
+    model.add(Dropout(0.2))
+
+    model.add(Dense(4096))
+    model.add(Activation("relu"))
+    model.add(Dropout(0.2))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))

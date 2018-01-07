@@ -1,16 +1,16 @@
 # X-Net: Classifying Chest X-Rays Using Deep Learning
 
 ## Background
-In October 2017, the National Institute of Health open sourced 100,000 images of chest
+In October 2017, the National Institute of Health open sourced 112,000+ images of chest
 chest x-rays. The datasets was opened in order to allow clinicians to make better
 diagnostic decisions for patients.
 
 
 # Dataset
-The [dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345)
+The ChestXray14 [dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345)
 consists of both images and structured data.
 
-The image dataset consists of 112,000 images, which consist of 30,000 patients.
+The image dataset consists of 112,000+ images, which consist of 30,000 patients.
 Some patients have multiple scans, which will be taken into consideration.
 All images are originally 1024 x 1024 pixels.
 
@@ -54,18 +54,21 @@ on the patient diagnosis.
 Finally, anyone whose age was given in months (M) or days (D) was removed. The amount of data removed is minimal,
 and does not affect the analysis.
 
+
 ## Model (Structured Data)
 
 The structured data is trained using a distributed random forest. This exists
 within the H2O.ai framework.
 
+
 ## Results (Structured Data)
 
 |Measurement|Score|
 | :-------------: |:-------------:|
-Log Loss|1.400|
-MSE|0.450|
-RMSE|0.670|
+Model | H2OGradientBoostingEstimator|
+Log Loss|1.670|
+MSE|0.510|
+RMSE|0.714|
 R^2|0.967|
 Mean Per-Class Error|0.933|
 
@@ -77,6 +80,24 @@ Mean Per-Class Error|0.933|
 ## Results (Convolutional Neural Network)
 |Measurement|Score|
 | ------------- |:-------------:|
+
+
+## Explanations
+
+Per the [blog post](https://lukeoakdenrayner.wordpress.com/2017/12/18/the-chestxray14-dataset-problems/) from Luke Oakden-Rayner, there are multiple problems with this dataset. The most notable
+are the images (and structured data) being labeled incorrectly. He also notes the annotators did not look at the images.
+
+This became evident when training both models. Despite regularization, and rectifying the class imbalances,
+both models learned to return meaningless predictions. Per the above statement, this can be attributed to the incorrect
+labeling of the images.
+
+
+Due to these findings, per Mr. Oakden-Rayner, and my own analysis: "I believe the ChestXray14 dataset, as it exists now, is not fit for training medical AI systems to do diagnostic work."
+
+
+This doesn't discount convolutional neural networks from being able to predict diseases, but this is dependent on the
+labels being correct and accurate. Once this becomes rectified, and the images are correctly labeled, further analysis
+can resume against the ChestXray14 dataset.
 
 
 ## Tech Stack

@@ -1,5 +1,3 @@
-import time
-
 import h2o
 import pandas as pd
 from h2o.estimators import H2OGradientBoostingEstimator
@@ -16,15 +14,6 @@ def drop_columns(df, lst):
     return df
 
 
-# def convert_to_factor(df, column):
-#     """
-#     Convert features to factors (categories) in H2OFrame
-#     :param df: Name of H2OFrame
-#     :param column: String of column name within H2OFrame
-#     :return: Column converted to factor
-#     """
-#     return df[column].asfactor()
-
 def get_training_columns(df, target):
     """
     Creates list of columms for training (h2o only)
@@ -36,7 +25,6 @@ def get_training_columns(df, target):
 
 
 if __name__ == '__main__':
-    start = time.time()
 
     data = pd.read_csv("../data/Data_Entry_2017.csv", skiprows=1, names=['Image_Index', 'Finding_Labels', 'Follow_Up_#',
                                                                          'Patient_ID', 'Patient_Age', 'Patient_Gender',
@@ -50,8 +38,6 @@ if __name__ == '__main__':
                                'Original_Image_Height', 'Image_Index', 'Patient_ID',
                                'Original_Image_Pixel_Spacing_X', 'Original_Image_Pixel_Spacing_Y'])
 
-    # Check if number is in years, months, or days
-    # data['Age_Measure'] = data['Patient_Age'].astype(str).str[3]
 
     # Remove the character in Patient Age, and convert to integer
     data['Patient_Age'] = data['Patient_Age'].map(lambda x: str(x)[:-1]).astype(int)
@@ -66,7 +52,6 @@ if __name__ == '__main__':
 
     train, valid, test = data.split_frame(ratios=[0.6, 0.2], seed=8)
 
-    # Train Model
     training_columns = get_training_columns(train, "Finding_Labels")
 
     gbm = H2OGradientBoostingEstimator(ntrees=1000, distribution='multinomial', max_depth=2, learn_rate=0.001,
@@ -76,7 +61,5 @@ if __name__ == '__main__':
 
     gbm.train(x=training_columns, y='Finding_Labels', training_frame=train, validation_frame=valid)
     # performance = gbm.model_performance(test_data=test)
-
-    print("Seconds: ", time.time() - start)
 
     # h2o.cluster().shutdown()

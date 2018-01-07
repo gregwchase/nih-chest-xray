@@ -5,25 +5,45 @@ In October 2017, the National Institute of Health open sourced 112,000+ images o
 chest x-rays. Now known as ChestXray14, this dataset was opened in order to allow clinicians to make better
 diagnostic decisions for patients with various lung diseases.
 
+## Table of Contents
+1. [Objective](#objective)
+2. [Dataset](#dataset)
+3. [Exploratory Data Analysis](#exploratory-data-analysis)
+4. [Pipeline](#pipeline)
+5. [Preprocessing](#preprocessing)
+6. [Model (Structured Data)](#model-structured-data)
+7. [Model (Convolutional Neural Network)](#model-convolutional-neural-network)
+8. [Explanations](#explanations)
+9. [References](#references)
 
-# Dataset
+
+## Objective
+* Train a convolutional neural network to detect and classify diagnoses of patients.
+* Couple structured and unstructured datasets together into a dual classifier.
+
+
+## Dataset
 The ChestXray14 [dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345)
 consists of both images and structured data.
 
-The image dataset consists of 112,000+ images, which consist of 30,000 patients. My analysis consisted of 10,000 images, due to data sourcing & corrpution issues.
+The image dataset consists of 112,000+ images, which consist of 30,000 patients.
 Some patients have multiple scans, which will be taken into consideration.
 All images are originally 1024 x 1024 pixels.
 
+Due to data sourcing & corruption issues, my image dataset consists of 10,000
+of the original 112,000 images. All data is used for the structured model.
 
 Additionally, structured data is also given to us for each image. This dataset
 includes features such as age, number of follow up visits, AP vs PA scan, and
 the patient gender.
 
 
-## Objective
-* Train a convolutional neural network to detect and classify diagnoses of patients.
+## Exploratory Data Analysis
 
-* Couple structured and unstructured datasets together into a dual classifier.
+When researching the labels, there are 709 original, unique categories present. On further examination, the labels are hierarchical. For example, some labels are only "Emphysema", while others are "Emphysema | Cardiac Issues".
+
+The average age is 58 years old. However, about 400 patients are labeled
+as months, 1 of them is labeled in days.
 
 
 ## Pipeline
@@ -39,15 +59,6 @@ Two pipelines were created for each dataset. Each script is labeled as either "S
 |Convert Images to Arrays|image_to_array.py|CNN
 |CNN Model|cnn.py|CNN
 |Structured Data Model|model.py|Structured
-
-
-## Exploratory Data Analysis
-
-When researching the labels, there are 709 original, unique categories present. On further examination, the labels are hierarchical. For example, some labels are only "Emphysema", while others are "Emphysema | Cardiac Issues".
-
-The average age is 58 years old. However, about 400 patients are labeled
-as months, 1 of them is labeled in days.
-
 
 ## Preprocessing
 
